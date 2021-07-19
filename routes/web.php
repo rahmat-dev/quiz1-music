@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\PlayedController;
+use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +18,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+  return redirect('dashboard');
 });
+Route::get('dashboard', function () {
+  return view('index');
+});
+Route::resource('artist', ArtistController::class);
+Route::resource('album', AlbumController::class);
+Route::resource('track', TrackController::class);
+Route::resource('played', PlayedController::class);

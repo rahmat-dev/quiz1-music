@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artist;
 use Illuminate\Http\Request;
 
 class ArtistController extends Controller
@@ -13,7 +14,8 @@ class ArtistController extends Controller
    */
   public function index()
   {
-    //
+    $artists = Artist::all();
+    return view('artist.index', compact('artists'));
   }
 
   /**
@@ -23,7 +25,7 @@ class ArtistController extends Controller
    */
   public function create()
   {
-    //
+    return view('artist.create');
   }
 
   /**
@@ -34,7 +36,14 @@ class ArtistController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $validatedData = $request->validate([
+      'artist_name' => 'required'
+    ], [
+      'artist_name.required' => 'Nama artis harus diisi.'
+    ]);
+
+    Artist::create($validatedData);
+    return redirect(route('artist.index'));
   }
 
   /**
@@ -56,7 +65,8 @@ class ArtistController extends Controller
    */
   public function edit($id)
   {
-    //
+    $artist = Artist::findOrFail($id);
+    return view('artist.edit', compact('artist'));
   }
 
   /**
@@ -68,7 +78,15 @@ class ArtistController extends Controller
    */
   public function update(Request $request, $id)
   {
-    //
+    $validatedData = $request->validate([
+      'artist_name' => 'required|min:5'
+    ], [
+      'artist_name.required' => 'Nama artis harus diisi.'
+    ]);
+
+    $artist = Artist::findOrFail($id);
+    $artist->update($validatedData);
+    return redirect(route('artist.index'));
   }
 
   /**
@@ -79,6 +97,8 @@ class ArtistController extends Controller
    */
   public function destroy($id)
   {
-    //
+    $artist = Artist::findOrFail($id);
+    $artist->delete();
+    return redirect(route('artist.index'));
   }
 }
