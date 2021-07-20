@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Album;
+use App\Models\Artist;
 use App\Models\Track;
 use Illuminate\Http\Request;
 
@@ -25,7 +27,9 @@ class TrackController extends Controller
    */
   public function create()
   {
-    //
+    $artists = Artist::all();
+    $albums = Album::all();
+    return view('track.create', compact(['artists', 'albums']));
   }
 
   /**
@@ -36,7 +40,20 @@ class TrackController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $validatedData = $request->validate([
+      'track_name' => 'required',
+      'artist_id' => 'required',
+      'album_id' => 'required',
+      'time' => 'required'
+    ], [
+      'track_name.required' => 'Judul lagu harus diisi',
+      'artist_id.required' => 'Mohon pilih artis',
+      'album_id.required' => 'Mohon pilih album',
+      'time.required' => 'Durasi harus diisi'
+    ]);
+
+    Track::create($validatedData);
+    return redirect(route('track.index'));
   }
 
   /**
@@ -58,7 +75,10 @@ class TrackController extends Controller
    */
   public function edit($id)
   {
-    //
+    $track = Track::findOrFail($id);
+    $artists = Artist::all();
+    $albums = Album::all();
+    return view('track.edit', compact(['track', 'artists', 'albums']));
   }
 
   /**
@@ -70,7 +90,21 @@ class TrackController extends Controller
    */
   public function update(Request $request, $id)
   {
-    //
+    $validatedData = $request->validate([
+      'track_name' => 'required',
+      'artist_id' => 'required',
+      'album_id' => 'required',
+      'time' => 'required'
+    ], [
+      'track_name.required' => 'Judul lagu harus diisi',
+      'artist_id.required' => 'Mohon pilih artis',
+      'album_id.required' => 'Mohon pilih album',
+      'time.required' => 'Durasi harus diisi'
+    ]);
+
+    $track = Track::findOrFail($id);
+    $track->update($validatedData);
+    return redirect(route('track.index'));
   }
 
   /**
@@ -81,6 +115,8 @@ class TrackController extends Controller
    */
   public function destroy($id)
   {
-    //
+    $track = Track::findOrFail($id);
+    $track->delete();
+    return redirect(route('track.index'));
   }
 }

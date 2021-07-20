@@ -29,6 +29,7 @@
       <input type="text" class="form-control" id="album_name" name="album_name" value="{{$album->album_name}}">
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
+    <a class="btn btn-secondary" href="{{route('album.index')}}">Batal</a>
   </form>
 </div>
 @endsection
