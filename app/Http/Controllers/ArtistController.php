@@ -39,7 +39,7 @@ class ArtistController extends Controller
     $validatedData = $request->validate([
       'artist_name' => 'required'
     ], [
-      'artist_name.required' => 'Nama artis harus diisi.'
+      'artist_name.required' => 'Nama artis harus diisi'
     ]);
 
     Artist::create($validatedData);
@@ -79,9 +79,9 @@ class ArtistController extends Controller
   public function update(Request $request, $id)
   {
     $validatedData = $request->validate([
-      'artist_name' => 'required|min:5'
+      'artist_name' => 'required'
     ], [
-      'artist_name.required' => 'Nama artis harus diisi.'
+      'artist_name.required' => 'Nama artis harus diisi'
     ]);
 
     $artist = Artist::findOrFail($id);

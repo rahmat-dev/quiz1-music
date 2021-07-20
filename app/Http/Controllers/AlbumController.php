@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Models\Artist;
 use Illuminate\Http\Request;
 
 class AlbumController extends Controller
@@ -25,7 +26,8 @@ class AlbumController extends Controller
    */
   public function create()
   {
-    //
+    $artists = Artist::all();
+    return view('album.create', compact('artists'));
   }
 
   /**
@@ -36,7 +38,16 @@ class AlbumController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $validatedData = $request->validate([
+      'artist_id' => 'required',
+      'album_name' => 'required'
+    ], [
+      'artist_id.required' => 'Mohon pilih artis',
+      'album_name.required' => 'Nama album harus diisi'
+    ]);
+
+    Album::create($validatedData);
+    return redirect(route('album.index'));
   }
 
   /**
@@ -58,7 +69,9 @@ class AlbumController extends Controller
    */
   public function edit($id)
   {
-    //
+    $artists = Artist::all();
+    $album = Album::findOrFail($id);
+    return view('album.edit', compact(['album', 'artists']));
   }
 
   /**
@@ -70,7 +83,17 @@ class AlbumController extends Controller
    */
   public function update(Request $request, $id)
   {
-    //
+    $validatedData = $request->validate([
+      'artist_id' => 'required',
+      'album_name' => 'required'
+    ], [
+      'artist_id.required' => 'Mohon pilih artis',
+      'album_name.required' => 'Nama album harus diisi'
+    ]);
+
+    $album = Album::findOrFail($id);
+    $album->update($validatedData);
+    return redirect(route('album.index'));
   }
 
   /**
@@ -81,6 +104,8 @@ class AlbumController extends Controller
    */
   public function destroy($id)
   {
-    //
+    $album = Album::findOrFail($id);
+    $album->delete();
+    return redirect(route('album.index'));
   }
 }
