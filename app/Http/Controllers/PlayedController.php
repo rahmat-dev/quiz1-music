@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Album;
+use App\Models\Artist;
 use App\Models\Played;
+use App\Models\Track;
 use Illuminate\Http\Request;
 
 class PlayedController extends Controller
@@ -25,7 +28,10 @@ class PlayedController extends Controller
    */
   public function create()
   {
-    //
+    $artists = Artist::all();
+    $albums = Album::all();
+    $tracks = Track::all();
+    return view('played.create', compact(['artists', 'albums', 'tracks']));
   }
 
   /**
@@ -36,7 +42,18 @@ class PlayedController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $validatedData = $request->validate([
+      'artist_id' => 'required',
+      'album_id' => 'required',
+      'track_id' => 'required'
+    ], [
+      'artist_id.required' => 'Mohon pilih artis',
+      'album_id.required' => 'Mohon pilih album',
+      'track_id.required' => 'Mohon pilih judul lagu'
+    ]);
+
+    Played::create($validatedData);
+    return redirect(route('played.index'));
   }
 
   /**

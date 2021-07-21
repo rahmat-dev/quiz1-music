@@ -31,7 +31,7 @@
     <div class="mb-3">
       <label for="album_id" class="form-label">Nama Album</label>
       <select class="form-select" aria-label="Default select example" id="album_id" name="album_id">
-        <option selected value="">- Pilih Artis -</option>
+        <option selected value="">- Pilih Album -</option>
         @foreach ($albums as $album)
         <option {{$track->album_id == $album->album_id ? 'selected' : null}} value="{{$album->album_id}}">
           {{$album->album_name}}</option>

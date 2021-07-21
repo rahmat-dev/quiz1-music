@@ -40,7 +40,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link{{request()->is('played') ? ' active fw-bold' : ''}}"
-              href="{{route('played.index')}}">Played</a>
+              href="{{route('played.index')}}">Daftar Putar</a>
           </li>
         </ul>
       </div>
